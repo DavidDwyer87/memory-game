@@ -11,6 +11,32 @@
  */
 
 // Shuffle function from http://stackoverflow.com/a/2450976
+
+//variables	
+var cardArrayRef = ['fa-diamond','fa-paper-plane-o',
+	'fa-anchor','fa-bolt','fa-cube',
+	'fa-leaf','fa-bicycle','fa-bomb'];
+
+var cards = [];
+
+
+
+var Deck = function()
+{		
+	 //create card deck
+	 for (var j = 0; j<2; j++) {
+		for (let i = 0; i <cardArrayRef.length; i++) {
+			cards.push(cardArrayRef[i]);
+		} 	
+	 }
+}
+
+Deck.prototype.shuffleCards = function(){
+    //shuffle the the locations
+	let shuffled = shuffle(cards);
+    return shuffled; 
+}
+
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
 
@@ -24,6 +50,35 @@ function shuffle(array) {
 
     return array;
 }
+
+
+var Game = function()
+{
+	var deck = new Deck();
+	var shuffled = deck.shuffleCards();	
+
+	//UI Deck
+	var html_deck = $('.deck');
+    
+    //clear cards
+	html_deck.empty();
+
+
+	for (var i = 0; i < cards.length; i++) {
+		html_deck.append("<li class='card'>"+
+							"<i class=' fa "+shuffled[i]+"'></i>"+
+						 "</li>");
+		console.log(shuffled[i]);
+	}
+
+	$('.card').click(function(){
+		$(this).attr({class:'card open show'});
+	});
+}
+
+$(document).ready(function(){
+	var game = new Game();	
+});
 
 
 /*
