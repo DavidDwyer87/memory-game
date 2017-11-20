@@ -17,25 +17,28 @@ var cardArrayRef = ['fa-diamond','fa-paper-plane-o',
 	'fa-anchor','fa-bolt','fa-cube',
 	'fa-leaf','fa-bicycle','fa-bomb'];
 
-var cards = [];
+
 var first = '';
 var second = '';
 
 var Deck = function()
-{		
-	 //create card deck
-	 for (var j = 0; j<2; j++) {
+{	
+    var cards = [];
+
+	//create card deck
+	for (var j = 0; j<2; j++) {
 		for (let i = 0; i <cardArrayRef.length; i++) {
 			cards.push(cardArrayRef[i]);
 		} 	
-	 }
-}
+	}
+
+	this.c = cards;
+};
 
 Deck.prototype.shuffleCards = function(){
     //shuffle the the locations
-	let shuffled = shuffle(cards);
-    return shuffled; 
-}
+	return shuffle(this.c); 
+};
 
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
@@ -55,23 +58,42 @@ function shuffle(array) {
 var Game = function()
 {
 	var deck = new Deck();
-	var shuffled = deck.shuffleCards();	
+	this.shuffled = deck.shuffleCards();	
+};
 
+
+Game.prototype.addToDeck = function()
+{
+	var deck = clearDeck();	
+
+
+	for (var i = 0; i < this.shuffled.length; i++) {
+		deck.append("<li class='card' data-card-number ='"+i+"'>"+
+							"<i class=' fa "+this.shuffled[i]+"'></i>"+
+						 "</li>");
+	}
+
+	$('.card').click(cardHandler);
+};
+
+
+var clearDeck = function()
+{
 	//UI Deck
 	var html_deck = $('.deck');
     
     //clear cards
 	html_deck.empty();
 
+	//remove event 
+	$('.card').off('click');
 
-	for (var i = 0; i < cards.length; i++) {
-		html_deck.append("<li class='card' data-card-number ='"+i+"'>"+
-							"<i class=' fa "+shuffled[i]+"'></i>"+
-						 "</li>");
-	}
+	//reset variables
+	first = '';
+	second = '';
 
-	$('.card').click(cardHandler);
-}
+	return html_deck;	
+};
 
 var cardHandler = function(){
 
@@ -107,7 +129,16 @@ var cardHandler = function(){
 };
 
 $(document).ready(function(){
+	//init game with a shuffle
 	var game = new Game();	
+	game.addToDeck();
+
+	//start click event for restart button.
+	$('.restart').click(function(){
+		
+		//restart game
+		game.addToDeck();
+	});
 });
 
 
