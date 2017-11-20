@@ -58,8 +58,14 @@ function shuffle(array) {
 var Game = function()
 {
 	var deck = new Deck();
+	this.deck = deck;
 	this.shuffled = deck.shuffleCards();	
 };
+
+Game.prototype.newGame = function()
+{
+	this.shuffled = this.deck.shuffleCards();
+}
 
 
 Game.prototype.addToDeck = function()
@@ -136,7 +142,8 @@ $(document).ready(function(){
 	//start click event for restart button.
 	$('.restart').click(function(){
 		
-		//restart game
+		//reset game
+		game.newGame();
 		game.addToDeck();
 	});
 });
