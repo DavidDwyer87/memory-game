@@ -18,8 +18,8 @@ var cardArrayRef = ['fa-diamond','fa-paper-plane-o',
 	'fa-leaf','fa-bicycle','fa-bomb'];
 
 var cards = [];
-
-
+var first = '';
+var second = '';
 
 var Deck = function()
 {		
@@ -65,16 +65,46 @@ var Game = function()
 
 
 	for (var i = 0; i < cards.length; i++) {
-		html_deck.append("<li class='card'>"+
+		html_deck.append("<li class='card' data-card-number ='"+i+"'>"+
 							"<i class=' fa "+shuffled[i]+"'></i>"+
 						 "</li>");
-		console.log(shuffled[i]);
 	}
 
-	$('.card').click(function(){
-		$(this).attr({class:'card open show'});
-	});
+	$('.card').click(cardHandler);
 }
+
+var cardHandler = function(){
+
+	var icon = $(this);
+	icon.attr({class:'card open show'});
+	
+	if(first == '')
+	{
+		first = icon;
+	}
+	else 
+	{
+        //compare card numbers so that a showing card is not click twice.
+		if (first.data('card-number') !== icon.data('card-number')) {
+			second = icon;	
+		}
+		
+
+		if(first.html()==second.html())
+		{
+			$(first).attr({class:'card match'});
+			$(second).attr({class:'card match'});
+		}
+		else
+		{
+			$(first).attr({class:'card'});
+			$(second).attr({class:'card'});				
+		}
+
+		first = '';
+		second = '';
+	}
+};
 
 $(document).ready(function(){
 	var game = new Game();	
