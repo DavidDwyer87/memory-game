@@ -79,7 +79,7 @@ Game.prototype.addToDeck = function()
 						 "</li>");
 	}
 
-	$('.card').click(cardHandler);
+	$('.card').click(this.cardHandler);
 };
 
 
@@ -101,7 +101,7 @@ var clearDeck = function()
 	return html_deck;	
 };
 
-var cardHandler = function(){
+Game.prototype.cardHandler = function(){
 
 	var icon = $(this);
 	icon.attr({class:'card open show'});
@@ -131,7 +131,24 @@ var cardHandler = function(){
 
 		first = '';
 		second = '';
+
+		//update moves
+
 	}
+};
+
+var Moves = function()
+{
+	//initialize move count variable
+	var moves = 0;
+	this.moveCounter = moves;
+	$('.moves').html(moves);
+};
+Moves.prototype.increment = function(){
+	moveCounter++;
+
+	//update count on UI
+	$('.moves').html(moveCounter);
 };
 
 $(document).ready(function(){
