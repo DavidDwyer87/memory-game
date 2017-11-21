@@ -20,6 +20,7 @@ var cardArrayRef = ['fa-diamond','fa-paper-plane-o',
 
 var first = '';
 var second = '';
+var moves = new Moves();
 
 var Deck = function()
 {	
@@ -59,7 +60,7 @@ var Game = function()
 {
 	var deck = new Deck();
 	this.deck = deck;
-	this.shuffled = deck.shuffleCards();	
+	this.shuffled = deck.shuffleCards();
 };
 
 Game.prototype.newGame = function()
@@ -72,6 +73,7 @@ Game.prototype.addToDeck = function()
 {
 	var deck = clearDeck();	
 
+	moves.ReturnToZero();
 
 	for (var i = 0; i < this.shuffled.length; i++) {
 		deck.append("<li class='card' data-card-number ='"+i+"'>"+
@@ -133,22 +135,26 @@ Game.prototype.cardHandler = function(){
 		second = '';
 
 		//update moves
-
+		moves.increment();
 	}
 };
 
 var Moves = function()
 {
 	//initialize move count variable
-	var moves = 0;
-	this.moveCounter = moves;
-	$('.moves').html(moves);
+	this.moveCounter = 0;
+	$('.moves').html(this.moveCounter);
 };
-Moves.prototype.increment = function(){
-	moveCounter++;
 
-	//update count on UI
+Moves.prototype.increment = function(){
+	this.moveCounter++;
+    
+    //update count on UI
 	$('.moves').html(moveCounter);
+};
+
+Moves.prototype.ReturnToZero(){
+	this.moveCounter = 0;
 };
 
 $(document).ready(function(){
@@ -158,7 +164,6 @@ $(document).ready(function(){
 
 	//start click event for restart button.
 	$('.restart').click(function(){
-		
 		//reset game
 		game.newGame();
 		game.addToDeck();
