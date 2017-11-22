@@ -20,7 +20,7 @@ var cardArrayRef = ['fa-diamond','fa-paper-plane-o',
 
 var first = '';
 var second = '';
-var moves = new Moves();
+var move = {};
 
 var Deck = function()
 {	
@@ -41,26 +41,12 @@ Deck.prototype.shuffleCards = function(){
 	return shuffle(this.c); 
 };
 
-function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
-
-    while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
-
-    return array;
-}
-
-
 var Game = function()
 {
 	var deck = new Deck();
 	this.deck = deck;
 	this.shuffled = deck.shuffleCards();
+	move = new Moves();
 };
 
 Game.prototype.newGame = function()
@@ -73,7 +59,7 @@ Game.prototype.addToDeck = function()
 {
 	var deck = clearDeck();	
 
-	moves.ReturnToZero();
+	move.ReturnToZero();
 
 	for (var i = 0; i < this.shuffled.length; i++) {
 		deck.append("<li class='card' data-card-number ='"+i+"'>"+
@@ -82,25 +68,6 @@ Game.prototype.addToDeck = function()
 	}
 
 	$('.card').click(this.cardHandler);
-};
-
-
-var clearDeck = function()
-{
-	//UI Deck
-	var html_deck = $('.deck');
-    
-    //clear cards
-	html_deck.empty();
-
-	//remove event 
-	$('.card').off('click');
-
-	//reset variables
-	first = '';
-	second = '';
-
-	return html_deck;	
 };
 
 Game.prototype.cardHandler = function(){
@@ -135,7 +102,7 @@ Game.prototype.cardHandler = function(){
 		second = '';
 
 		//update moves
-		moves.increment();
+		move.increment();
 	}
 };
 
@@ -150,12 +117,44 @@ Moves.prototype.increment = function(){
 	this.moveCounter++;
     
     //update count on UI
-	$('.moves').html(moveCounter);
+	$('.moves').html(this.moveCounter);
 };
 
-Moves.prototype.ReturnToZero(){
+Moves.prototype.ReturnToZero = function(){
 	this.moveCounter = 0;
 };
+
+var clearDeck = function()
+{
+	//UI Deck
+	var html_deck = $('.deck');
+    
+    //clear cards
+	html_deck.empty();
+
+	//remove event 
+	$('.card').off('click');
+
+	//reset variables
+	first = '';
+	second = '';
+
+	return html_deck;	
+};
+
+function shuffle(array) {
+    var currentIndex = array.length, temporaryValue, randomIndex;
+
+    while (currentIndex !== 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+    }
+
+    return array;
+}
 
 $(document).ready(function(){
 	//init game with a shuffle
@@ -169,6 +168,8 @@ $(document).ready(function(){
 		game.addToDeck();
 	});
 });
+
+
 
 
 /*
