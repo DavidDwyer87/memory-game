@@ -85,18 +85,20 @@ Game.prototype.cardHandler = function(){
 		if (first.data('card-number') !== icon.data('card-number')) {
 			second = icon;	
 		}
-		
 
-		if(first.html()==second.html())
+		if(second.html() != 'undefined')
 		{
-			$(first).attr({class:'card match'});
-			$(second).attr({class:'card match'});
-		}
-		else
-		{
-			$(first).attr({class:'card'});
-			$(second).attr({class:'card'});				
-		}
+			if(first.html()==second.html())
+			{
+				$(first).attr({class:'card match'});
+				$(second).attr({class:'card match'});
+			}
+			else
+			{
+				$(first).attr({class:'card'});
+				$(second).attr({class:'card'});				
+			}
+		}		
 
 		first = '';
 		second = '';
@@ -110,11 +112,36 @@ var Moves = function()
 {
 	//initialize move count variable
 	this.moveCounter = 0;
+	this.countDown = 5;
+
+	// add count to UI
 	$('.moves').html(this.moveCounter);
+    
+    //add 5 starts
+    for(var i=1; i<6; i++){    	
+		$('.stars').append("<li>"+
+							"<i class='fa fa-star' data-star-count='"+i+"'></i>"+
+						 "</li>");	
+    }
+    
 };
 
 Moves.prototype.increment = function(){
 	this.moveCounter++;
+
+	//remove star when the moveCounter 13, 26, 39, 52, 65
+	if(this.moveCounter == 13 || this.moveCounter == 26 || this.moveCounter == 39 || this.moveCounter == 52 || this.moveCounter == 65){
+		//remove a star
+		$('.fa-star').each(function(){
+			var star = $(this);
+
+			if (star.data('star-count') == this.countDown) {
+				star.remove();
+				this.countDown--;
+			}
+			console.log('yes '+this.moveCounter);
+		});
+	}
     
     //update count on UI
 	$('.moves').html(this.moveCounter);
