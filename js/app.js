@@ -85,8 +85,7 @@ Game.prototype.cardHandler = function(){
 		if (first.data('card-number') !== icon.data('card-number')) {
 			second = icon;	
 		}
-
-		if(second.html() != 'undefined')
+		else
 		{
 			if(first.html()==second.html())
 			{
@@ -102,11 +101,8 @@ Game.prototype.cardHandler = function(){
 				$(first).attr({class:'card'});
 				$(second).attr({class:'card'});				
 			}
-		}
-		else
-		{
-			console.log('oh no!');
-		}		
+		}			
+				
 
 		first = '';
 		second = '';
@@ -128,8 +124,8 @@ var Moves = function()
     //add 5 starts
     for(var i=1; i<6; i++){    	
 		$('.stars').append("<li>"+
-							"<i class='fa fa-star' data-star-count='"+i+"'></i>"+
-						 "</li>");	
+								"<i class='fa fa-star' data-star-count='"+i+"'></i>"+
+						 	"</li>");	
     }
     
 };
@@ -139,15 +135,17 @@ Moves.prototype.increment = function(){
 
 	//remove star when the moveCounter 13, 26, 39, 52, 65
 	if(this.moveCounter == 13 || this.moveCounter == 26 || this.moveCounter == 39 || this.moveCounter == 52 || this.moveCounter == 65){
+		
 		//remove a star
-		$('.fa-star').each(function(){
+		$('.fa fa-star').each(function(){
 			var star = $(this);
 
 			if (star.data('star-count') == this.countDown) {
+
+				console.log('yes');
 				star.remove();
 				this.countDown--;
 			}
-			console.log('yes '+this.moveCounter);
 		});
 	}
     
