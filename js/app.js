@@ -126,7 +126,7 @@ var Moves = function()
     //add 5 starts
     for(var i=1; i<6; i++){    	
 		$('.stars').append("<li>"+
-								"<i class='fa fa-star' data-star-count='"+i+"'></i>"+
+								"<i class='fa fa-star'></i>"+
 						 	"</li>");	
     }
     
@@ -137,18 +137,14 @@ Moves.prototype.increment = function(){
 
 	//remove star when the moveCounter 13, 26, 39, 52, 65
 	if(this.moveCounter == 13 || this.moveCounter == 26 || this.moveCounter == 39 || this.moveCounter == 52 || this.moveCounter == 65){
-		
+		var star = '';
 		//remove a star
-		$('.fa fa-star').each(function(){
-			var star = $(this);
-
-			if (star.data('star-count') == this.countDown) {
-
-				console.log('yes');
-				star.remove();
-				this.countDown--;
-			}
+		$('.fa-star').each(function(){
+			star = $(this);
 		});
+
+		//remove star
+		star.remove();
 	}
     
     //update count on UI
