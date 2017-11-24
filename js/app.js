@@ -22,6 +22,7 @@ var first = '';
 var second = '';
 var move = {};
 
+//deck constructure class
 var Deck = function()
 {	
     var cards = [];
@@ -41,6 +42,7 @@ Deck.prototype.shuffleCards = function(){
 	return shuffle(this.c); 
 };
 
+//game constructure class
 var Game = function()
 {
 	var deck = new Deck();
@@ -49,12 +51,13 @@ var Game = function()
 	move = new Moves();
 };
 
+//create a new gme
 Game.prototype.newGame = function()
 {
 	this.shuffled = this.deck.shuffleCards();
 }
 
-
+//add cards to deck
 Game.prototype.addToDeck = function()
 {
 	var deck = clearDeck();	
@@ -70,6 +73,7 @@ Game.prototype.addToDeck = function()
 	$('.card').click(this.cardHandler);
 };
 
+//event handler for cards
 Game.prototype.cardHandler = function(){
 
 	var icon = $(this);
@@ -114,6 +118,7 @@ Game.prototype.cardHandler = function(){
 	}
 };
 
+//move constructure class
 var Moves = function()
 {
 	//initialize move count variable
@@ -132,6 +137,7 @@ var Moves = function()
     
 };
 
+//increment for every move
 Moves.prototype.increment = function(){
 	this.moveCounter++;
 
@@ -151,6 +157,7 @@ Moves.prototype.increment = function(){
 	$('.moves').html(this.moveCounter);
 };
 
+//return to zero 
 Moves.prototype.ReturnToZero = function(){
 	this.moveCounter = 0;
 };
