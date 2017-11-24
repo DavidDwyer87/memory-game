@@ -92,12 +92,20 @@ Game.prototype.cardHandler = function(){
 			{
 				$(first).attr({class:'card match'});
 				$(second).attr({class:'card match'});
+
+				//remove event handle
+				first.off('click');
+				second.off('click');
 			}
 			else
 			{
 				$(first).attr({class:'card'});
 				$(second).attr({class:'card'});				
 			}
+		}
+		else
+		{
+			console.log('oh no!');
 		}		
 
 		first = '';
