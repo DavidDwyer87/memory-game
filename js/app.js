@@ -87,20 +87,22 @@ Game.prototype.cardHandler = function(){
 		}
 		else
 		{
-			if(first.html()==second.html())
-			{
-				$(first).attr({class:'card match'});
-				$(second).attr({class:'card match'});
+			return;
+		}
+		
+		if(first.html()==second.html())
+		{
+			$(first).attr({class:'card match'});
+			$(second).attr({class:'card match'});
 
-				//remove event handle
-				first.off('click');
-				second.off('click');
-			}
-			else
-			{
-				$(first).attr({class:'card'});
-				$(second).attr({class:'card'});				
-			}
+			//remove event handle
+			first.off('click');
+			second.off('click');			
+		}
+		else
+		{
+			$(first).attr({class:'card'});
+			$(second).attr({class:'card'});				
 		}			
 				
 
