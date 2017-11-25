@@ -82,6 +82,12 @@ Game.prototype.cardHandler = function(){
 	if(first == '')
 	{
 		first = icon;
+
+		/*first.animate({
+				marginLeft:'15px'				
+			},"fast");
+
+		first.animate({marginLeft:'0px'},'fast');*/
 	}
 	else 
 	{
@@ -96,25 +102,89 @@ Game.prototype.cardHandler = function(){
 		
 		if(first.html()==second.html())
 		{
-			$(first).attr({class:'card match'});
-			$(second).attr({class:'card match'});
+			//animation
+			first.animate({
+				width:'110px',
+				height:'110px'
+			},"fast");
 
-			//remove event handle
-			first.off('click');
-			second.off('click');			
+			second.animate({
+				width:'110px',
+				height:'110px'
+			},"fast");
+
+			first.animate({
+					width:'125px',
+					height:'125px'
+				},
+				{
+					duration:'fast',
+					specialeasing:{
+					width:'easeOutBounce',
+					height: 'easeOutBounce'
+				}
+			});
+
+			second.animate({
+					width:'125px',
+					height:'125px'
+				},
+				{
+					duration:'fast',
+					specialeasing:{
+					width:'easeOutBounce',
+					height: 'easeOutBounce'
+				},
+				function(){
+					$(first).attr({class:'card match'});
+					$(second).attr({class:'card match'});
+
+					//remove event handle
+					first.off('click');
+					second.off('click');	
+				}
+			});
 		}
 		else
 		{
-			$(first).attr({class:'card'});
-			$(second).attr({class:'card'});				
-		}			
-				
+			//incorrect
+			first.attr({class:'card incorrect'});
+			second.attr({class:'card incorrect'});
 
-		first = '';
-		second = '';
+			//animate
+			first.animate({
+				marginLeft:'-15px',
+			},"fast");
+
+			second.animate({
+				marginLeft:'-15px'
+			},"fast");
+
+			first.animate({
+				marginLeft:'0px'
+			},{
+				duration:"fast",
+				specialeasing:{marginLeft: 'easein'}
+			});
+
+			second.animate({
+					marginLeft:'0px'
+				},
+				{
+					duration:"fast",
+					specialeasing:{marginLeft: 'easein'}
+				});
+
+			$(first).attr({class:'card'});
+			$(second).attr({class:'card'});			
+
+			first = '';
+			second = '';	
+				
+		}
 
 		//update moves
-		move.increment();
+		move.increment();				
 	}
 };
 
@@ -150,7 +220,7 @@ Moves.prototype.increment = function(){
 		});
 
 		//remove star
-		star.remove();
+		star.attr({class:'fa fa-star-o'});
 	}
     
     //update count on UI
