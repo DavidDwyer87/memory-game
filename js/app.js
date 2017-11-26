@@ -87,7 +87,7 @@ Game.prototype.cardHandler = function(){
 		first = icon;
 
 		/*first.animate({
-				marginLeft:'15px'				
+				marginLeft:'-15px'				
 			},"fast",function(){
 				$(first).attr({class:'card'});
 			});
@@ -107,97 +107,107 @@ Game.prototype.cardHandler = function(){
 		
 		if(first.html()==second.html())
 		{
+			
 			//animation
-			/*first.animate({
-				width:'110px',
-				height:'110px'
-			},"fast");
-
-			second.animate({
-				width:'110px',
-				height:'110px'
-			},"fast");
-
 			first.animate({
-					width:'125px',
-					height:'125px'
-				},
-				{
-					duration:'fast',
-					specialeasing:{
-					width:'easeOutBounce',
-					height: 'easeOutBounce'
-				}
+				width:'118px',
+				height:'118px',
+				left: '7px'
+			},"fast",function(){
+				first.animate({
+						width:'125px',
+						height:'125px',
+						left: '0px'
+					},
+					{
+						duration:'fast',
+						specialeasing:{
+						width:'easeOutBounce',
+						height: 'easeOutBounce'
+					},
+					function()
+					{
+						window.setTimeout(function(){
+							first.attr({class:'card match'});
+
+							//remove event handle
+							first.off('click');
+
+							first = '';
+
+						},800);
+					}
+				});
 			});
 
 			second.animate({
-					width:'125px',
-					height:'125px'
-				},
-				{
-					duration:'fast',
-					specialeasing:{
-					width:'easeOutBounce',
-					height: 'easeOutBounce'
-				},
-				function(){*/
-					$(first).attr({class:'card match'});
-					$(second).attr({class:'card match'});
+				width:'118px',
+				height:'118px',
+				left: '7px'
+			},"fast",function(){
+				second.animate({
+						width:'125px',
+						height:'125px',
+						left:'0px'
+					},
+					{
+						duration:'fast',
+						specialeasing:{
+						width:'easeOutBounce',
+						height: 'easeOutBounce'
+					},
+					function()
+					{
+						window.setTimeout(function(){
 
-					//remove event handle
-					first.off('click');
-					second.off('click');	
-					
-					this.showCount++;
+							second.attr({class:'card match'});
 
-					if(this.showCount==8){
-						window.location.href = 'win.html?m='+move.getMoves()+'&s='+move.getStars();
+							//remove event handle
+							second.off('click');
+
+							second = '';
+
+							this.showCount++;
+
+							if(this.showCount==move.getMoves()){
+								window.location.href = "win.html";
+							}
+						},800);
 					}
-
-					first = '';
-					second = '';
-
-				//}
-			//});
+				});
+			});
 		}
 		else
 		{
 			//incorrect
 			first.attr({class:'card incorrect'});
 			second.attr({class:'card incorrect'});
-
+			
 			//animate
-			/*first.animate({
-				marginLeft:'-15px',
-			},"fast");
-
-			second.animate({
-				marginLeft:'-15px'
-			},"fast");
-
 			first.animate({
-				marginLeft:'0px'
-			},{
-				duration:"fast",
-				specialeasing:{marginLeft: 'easein'}
+				marginLeft:'-8px',
+			},"fast",
+			function(){				
+				first.animate({marginLeft:'0px'},'fast',function(){
+					window.setTimeout(function(){
+						first.attr({class:'card'});
+					 	first = '';		
+					},800);					
+				});				
 			});
 
 			second.animate({
-					marginLeft:'0px'
-				},
-				{
-					duration:"fast",
-					specialeasing:{marginLeft: 'easein'}
-				},function(){
-
-				});*/
-
-			$(first).attr({class:'card'});
-			$(second).attr({class:'card'});			
-
-			first = '';
-			second = '';	
-				
+				marginLeft:'-8px'
+			},"fast",
+			function(){				
+				second.animate({marginLeft:'0px'},'fast',function(){
+					window.setTimeout(function(){
+						second.attr({class:'card'});
+						second = '';	
+					},800);
+					
+				});				
+			});						
 		}
 
 		//update moves
@@ -232,7 +242,7 @@ Moves.prototype.getMoves = function(){
 
 Moves.prototype.getStars = function(){
 	return this.countDown;
-}
+};
 
 //increment for every move
 Moves.prototype.increment = function(){
