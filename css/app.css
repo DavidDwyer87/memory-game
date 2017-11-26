@@ -16,7 +16,7 @@ body {
     padding: 0;
 }
 
-body {
+game-body {
     background: #ffffff url('../img/geometry2.png'); /* Background pattern from Subtle Patterns */
     font-family: 'Coda', cursive;
 }
@@ -112,4 +112,20 @@ h1 {
 .score-panel .restart {
     float: right;
     cursor: pointer;
+}
+
+/*html win page*/
+.content{
+    margin: auto;
+    width: 400px;
+    text-align: center;
+}
+
+.check{
+    width: 200px;
+    height: 200px;
+}
+
+#stats{
+    padding-bottom: 20px;
 }

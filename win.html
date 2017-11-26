@@ -1,0 +1,37 @@
+<html>
+	<head>
+		<title>
+			You won
+		</title>
+		 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+		 <link rel="stylesheet" type="text/css" href="css/app.css">
+
+		 <link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+
+		 <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+	</head>
+	<body>
+		<div class="content">
+			<img class="check" src="img/checkmark.gif" alt="checkmark">	
+
+			<h1>Congratulations! you won!</h1>
+			<p id="stats">
+				
+			</p>
+			<a class="btn btn-primary" href="index.html">Play again!</a>
+		</div>
+
+		<script
+        src="https://code.jquery.com/jquery-3.0.0.min.js"
+        integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="
+        crossorigin="anonymous"></script>
+
+		<script type="text/javascript">
+			$(document).ready(function(){
+				$('#stats').text("with "+window.sessionStorage.moves+" Moves and "+window.sessionStorage.stars+" Stars. Woooooo!")
+			});
+		 </script>
+	</body>		 
+</html>

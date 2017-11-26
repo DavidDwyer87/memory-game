@@ -22,6 +22,7 @@ var first = '';
 var second = '';
 var move = {};
 
+
 //deck constructure class
 var Deck = function()
 {	
@@ -48,6 +49,8 @@ var Game = function()
 	var deck = new Deck();
 	this.deck = deck;
 	this.shuffled = deck.shuffleCards();
+	this.showCount = 0;
+
 	move = new Moves();
 };
 
@@ -85,7 +88,9 @@ Game.prototype.cardHandler = function(){
 
 		/*first.animate({
 				marginLeft:'15px'				
-			},"fast");
+			},"fast",function(){
+				$(first).attr({class:'card'});
+			});
 
 		first.animate({marginLeft:'0px'},'fast');*/
 	}
@@ -103,7 +108,7 @@ Game.prototype.cardHandler = function(){
 		if(first.html()==second.html())
 		{
 			//animation
-			first.animate({
+			/*first.animate({
 				width:'110px',
 				height:'110px'
 			},"fast");
@@ -135,15 +140,25 @@ Game.prototype.cardHandler = function(){
 					width:'easeOutBounce',
 					height: 'easeOutBounce'
 				},
-				function(){
+				function(){*/
 					$(first).attr({class:'card match'});
 					$(second).attr({class:'card match'});
 
 					//remove event handle
 					first.off('click');
 					second.off('click');	
-				}
-			});
+					
+					this.showCount++;
+
+					if(this.showCount==8){
+						window.location.href = 'win.html?m='+move.getMoves()+'&s='+move.getStars();
+					}
+
+					first = '';
+					second = '';
+
+				//}
+			//});
 		}
 		else
 		{
@@ -152,7 +167,7 @@ Game.prototype.cardHandler = function(){
 			second.attr({class:'card incorrect'});
 
 			//animate
-			first.animate({
+			/*first.animate({
 				marginLeft:'-15px',
 			},"fast");
 
@@ -173,7 +188,9 @@ Game.prototype.cardHandler = function(){
 				{
 					duration:"fast",
 					specialeasing:{marginLeft: 'easein'}
-				});
+				},function(){
+
+				});*/
 
 			$(first).attr({class:'card'});
 			$(second).attr({class:'card'});			
@@ -192,8 +209,8 @@ Game.prototype.cardHandler = function(){
 var Moves = function()
 {
 	//initialize move count variable
-	this.moveCounter = 0;
-	this.countDown = 5;
+	this.moveCounter = 0; //move tracker
+	this.countDown = 5; //stars tracker
 
 	// add count to UI
 	$('.moves').html(this.moveCounter);
@@ -205,7 +222,17 @@ var Moves = function()
 						 	"</li>");	
     }
     
+    window.sessionStorage.setItem('stars',5);
+    window.sessionStorage.setItem('moves',0);    
 };
+
+Moves.prototype.getMoves = function(){
+	return this.moveCounter;
+};
+
+Moves.prototype.getStars = function(){
+	return this.countDown;
+}
 
 //increment for every move
 Moves.prototype.increment = function(){
@@ -221,10 +248,15 @@ Moves.prototype.increment = function(){
 
 		//remove star
 		star.attr({class:'fa fa-star-o'});
+
+		//knock off a star
+		this.countDown--;
+		window.sessionStorage.stars = this.countDown;
 	}
     
     //update count on UI
 	$('.moves').html(this.moveCounter);
+	window.sessionStorage.moves = this.moveCounter;
 };
 
 //return to zero 
