@@ -17,12 +17,9 @@ var cardArrayRef = ['fa-diamond','fa-paper-plane-o',
 	'fa-anchor','fa-bolt','fa-cube',
 	'fa-leaf','fa-bicycle','fa-bomb'];
 
-
-var first = '';
-var second = '';
-var move = {};
-
-var queue = [];
+var move = {}; //move object
+var queue = []; //card queue
+var showCards = 0;
 
 
 //deck constructure class
@@ -76,6 +73,16 @@ Game.prototype.addToDeck = function()
 						 "</li>");
 	}
 
+	//remove stars 
+	$('.stars').empty();
+
+	//add 5 starts
+    for(var i=1; i<6; i++){    	
+		$('.stars').append("<li>"+
+								"<i class='fa fa-star'></i>"+
+						 	"</li>");	
+    }
+
 	$('.card').click(this.cardHandler);
 };
 
@@ -87,33 +94,6 @@ Game.prototype.cardHandler = function(){
 	
 	queue.push(icon);
 	determine();
-	/*if(first == '')
-	{
-		first = icon;
-	}
-	else 
-	{
-        //compare card numbers so that a showing card is not click twice.
-		if (first.data('card-number') !== icon.data('card-number')) {
-			second = icon;	
-		}
-		else
-		{
-			return;
-		}
-		
-		if(first.html()==second.html())
-		{			
-		}
-		else
-		{
-		}
-
-		//update moves
-		
-	}*/
-
-	move.increment();				
 };
 
 //move constructure class
@@ -126,23 +106,9 @@ var Moves = function()
 	// add count to UI
 	$('.moves').html(this.moveCounter);
     
-    //add 5 starts
-    for(var i=1; i<6; i++){    	
-		$('.stars').append("<li>"+
-								"<i class='fa fa-star'></i>"+
-						 	"</li>");	
-    }
     
     window.sessionStorage.setItem('stars',5);
     window.sessionStorage.setItem('moves',0);    
-};
-
-Moves.prototype.getMoves = function(){
-	return this.moveCounter;
-};
-
-Moves.prototype.getStars = function(){
-	return this.countDown;
 };
 
 //increment for every move
@@ -173,6 +139,7 @@ Moves.prototype.increment = function(){
 //return to zero 
 Moves.prototype.ReturnToZero = function(){
 	this.moveCounter = 0;
+	$('.moves').html(this.moveCounter);
 };
 
 var clearDeck = function()
@@ -198,9 +165,16 @@ var determine = function(){
 		var card1 = queue.pop();
 		var card2 = queue.pop();
 
-		if (card1==card2) {
+		if (card1.html()==card2.html()) {
 			correctCards(card1);
 			correctCards(card2);
+
+			showCards++;
+			
+			if(showCards >= 8){
+				console.log('win');
+				window.location.href = "win.html";
+			}
 		}
 		else
 		{
@@ -208,7 +182,8 @@ var determine = function(){
 			incorrectCards(card2);
 		}
 
-		//console.log(queue.pop());	
+		//update moves
+		move.increment();				
 	}	
 };
 
@@ -237,6 +212,8 @@ var correctCards = function(card){
 						
 						//remove event handle
 						card.off('click');
+
+						console.log(showCards);
 					},800);
 				}
 			});
