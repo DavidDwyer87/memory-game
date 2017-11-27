@@ -22,6 +22,8 @@ var first = '';
 var second = '';
 var move = {};
 
+var queue = [];
+
 
 //deck constructure class
 var Deck = function()
@@ -63,6 +65,7 @@ Game.prototype.newGame = function()
 //add cards to deck
 Game.prototype.addToDeck = function()
 {
+
 	var deck = clearDeck();	
 
 	move.ReturnToZero();
@@ -82,17 +85,11 @@ Game.prototype.cardHandler = function(){
 	var icon = $(this);
 	icon.attr({class:'card open show'});
 	
-	if(first == '')
+	queue.push(icon);
+	determine();
+	/*if(first == '')
 	{
 		first = icon;
-
-		/*first.animate({
-				marginLeft:'-15px'				
-			},"fast",function(){
-				$(first).attr({class:'card'});
-			});
-
-		first.animate({marginLeft:'0px'},'fast');*/
 	}
 	else 
 	{
@@ -106,113 +103,17 @@ Game.prototype.cardHandler = function(){
 		}
 		
 		if(first.html()==second.html())
-		{
-			
-			//animation
-			first.animate({
-				width:'118px',
-				height:'118px',
-				left: '7px'
-			},"fast",function(){
-				first.animate({
-						width:'125px',
-						height:'125px',
-						left: '0px'
-					},
-					{
-						duration:'fast',
-						specialeasing:{
-						width:'easeOutBounce',
-						height: 'easeOutBounce'
-					},
-					function()
-					{
-						window.setTimeout(function(){
-							first.attr({class:'card match'});
-
-							//remove event handle
-							first.off('click');
-
-							first = '';
-
-						},800);
-					}
-				});
-			});
-
-			second.animate({
-				width:'118px',
-				height:'118px',
-				left: '7px'
-			},"fast",function(){
-				second.animate({
-						width:'125px',
-						height:'125px',
-						left:'0px'
-					},
-					{
-						duration:'fast',
-						specialeasing:{
-						width:'easeOutBounce',
-						height: 'easeOutBounce'
-					},
-					function()
-					{
-						window.setTimeout(function(){
-
-							second.attr({class:'card match'});
-
-							//remove event handle
-							second.off('click');
-
-							second = '';
-
-							this.showCount++;
-
-							if(this.showCount==move.getMoves()){
-								window.location.href = "win.html";
-							}
-						},800);
-					}
-				});
-			});
+		{			
 		}
 		else
 		{
-			//incorrect
-			first.attr({class:'card incorrect'});
-			second.attr({class:'card incorrect'});
-			
-			//animate
-			first.animate({
-				marginLeft:'-8px',
-			},"fast",
-			function(){				
-				first.animate({marginLeft:'0px'},'fast',function(){
-					window.setTimeout(function(){
-						first.attr({class:'card'});
-					 	first = '';		
-					},800);					
-				});				
-			});
-
-			second.animate({
-				marginLeft:'-8px'
-			},"fast",
-			function(){				
-				second.animate({marginLeft:'0px'},'fast',function(){
-					window.setTimeout(function(){
-						second.attr({class:'card'});
-						second = '';	
-					},800);
-					
-				});				
-			});						
 		}
 
 		//update moves
-		move.increment();				
-	}
+		
+	}*/
+
+	move.increment();				
 };
 
 //move constructure class
@@ -290,6 +191,72 @@ var clearDeck = function()
 	second = '';
 
 	return html_deck;	
+};
+
+var determine = function(){
+	if(queue.length>=2){
+		var card1 = queue.pop();
+		var card2 = queue.pop();
+
+		if (card1==card2) {
+			correctCards(card1);
+			correctCards(card2);
+		}
+		else
+		{
+			incorrectCards(card1);
+			incorrectCards(card2);
+		}
+
+		//console.log(queue.pop());	
+	}	
+};
+
+var correctCards = function(card){
+
+	card.animate({
+			width:'118px',
+			height:'118px',
+			left: '7px'
+		},"fast",function(){
+			card.animate({
+					width:'125px',
+					height:'125px',
+					left: '0px'
+				},
+				{
+					duration:'fast',
+					specialeasing:{
+					width:'easeOutBounce',
+					height: 'easeOutBounce'
+				},
+				function()
+				{
+					window.setTimeout(function(){
+						card.attr({class:'card match'});
+						
+						//remove event handle
+						card.off('click');
+					},800);
+				}
+			});
+	});
+
+};
+
+var incorrectCards = function(card){
+	card.attr({class:'card incorrect'});
+
+	card.animate({
+				marginLeft:'-8px',
+			},"fast",
+			function(){				
+				card.animate({marginLeft:'0px'},'fast',function(){
+					window.setTimeout(function(){
+						card.attr({class:'card'});					 			
+					},300);					
+				});				
+			});	
 };
 
 function shuffle(array) {
