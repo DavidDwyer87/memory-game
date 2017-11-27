@@ -19,7 +19,7 @@ var cardArrayRef = ['fa-diamond','fa-paper-plane-o',
 
 var move = {}; //move object
 var queue = []; //card queue
-var showCards = 0;
+var showCards = 0; //keep the count of all the card combination founded by users.
 
 
 //deck constructure class
@@ -106,7 +106,7 @@ var Moves = function()
 	// add count to UI
 	$('.moves').html(this.moveCounter);
     
-    
+    //stores the stars and moves to display on winner page
     window.sessionStorage.setItem('stars',5);
     window.sessionStorage.setItem('moves',0);    
 };
@@ -142,6 +142,7 @@ Moves.prototype.ReturnToZero = function(){
 	$('.moves').html(this.moveCounter);
 };
 
+//reset component operation
 var clearDeck = function()
 {
 	//UI Deck
@@ -160,6 +161,7 @@ var clearDeck = function()
 	return html_deck;	
 };
 
+//logic to determine and incorrect or correct match 
 var determine = function(){
 	if(queue.length>=2){
 		var card1 = queue.pop();
@@ -171,12 +173,13 @@ var determine = function(){
 
 			showCards++;
 			
+			//check if player win the game
 			if(showCards >= 8){
 				console.log('win');
 				window.location.href = "win.html";
 			}
 		}
-		else
+		else //incorrect operation call
 		{
 			incorrectCards(card1);
 			incorrectCards(card2);
@@ -187,6 +190,7 @@ var determine = function(){
 	}	
 };
 
+//correct card operation
 var correctCards = function(card){
 
 	card.animate({
@@ -221,6 +225,7 @@ var correctCards = function(card){
 
 };
 
+//incorrect card operation
 var incorrectCards = function(card){
 	card.attr({class:'card incorrect'});
 
@@ -236,6 +241,7 @@ var incorrectCards = function(card){
 			});	
 };
 
+//shuffle algorythm
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
 
@@ -250,6 +256,7 @@ function shuffle(array) {
     return array;
 }
 
+//main
 $(document).ready(function(){
 	//init game with a shuffle
 	var game = new Game();	
