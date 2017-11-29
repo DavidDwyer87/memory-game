@@ -20,6 +20,7 @@ var cardArrayRef = ['fa-diamond','fa-paper-plane-o',
 var move = {}; //move object
 var queue = []; //card queue
 var showCards = 0; //keep the count of all the card combination founded by users.
+var flag = false; //keep too much card from showing.
 
 
 //deck constructure class
@@ -89,11 +90,20 @@ Game.prototype.addToDeck = function()
 //event handler for cards
 Game.prototype.cardHandler = function(){
 
-	var icon = $(this);
-	icon.attr({class:'card open show'});
+	if(flag == false)
+	{		
+		flag = true;
+		var icon = $(this);
+		icon.attr({class:'card open show'});
+		
+		queue.push(icon);
+		determine();	
+	}
+	else
+	{
+		console.log("not working "+flag+" "+queue.length);
+	}
 	
-	queue.push(icon);
-	determine();
 };
 
 //move constructure class
@@ -164,34 +174,52 @@ var clearDeck = function()
 //logic to determine and incorrect or correct match 
 var determine = function(){
 	if(queue.length>=2){
+		
+
 		var card1 = queue.pop();
 		var card2 = queue.pop();
 
-		if (card1.html()==card2.html()) {
-			correctCards(card1);
-			correctCards(card2);
+		//ensure that the same card is not click multiple time
+		if(card1.data("card-number") == card2.data("card-number")) 
+		{
+			//same card is clicked so add it back to the queue
+			queue.push(card1); 
+			flag = false;
+			return;			
+		}
+		else if (card1.html()==card2.html()) 
+		{
+			new correctCards(card1,true);
+			new correctCards(card2,false);
 
 			showCards++;
 			
 			//check if player win the game
 			if(showCards >= 8){
-				console.log('win');
 				window.location.href = "win.html";
 			}
+
+			//update moves
+			move.increment();
 		}
 		else //incorrect operation call
 		{
-			incorrectCards(card1);
-			incorrectCards(card2);
-		}
+			new incorrectCards(card1,true);
+			new incorrectCards(card2,false);
 
-		//update moves
-		move.increment();				
-	}	
+			//update moves
+			move.increment();
+		}	
+						
+	}
+	else
+	{
+		flag = false;
+	}		
 };
 
 //correct card operation
-var correctCards = function(card){
+var correctCards = function(card,lock){
 
 	card.animate({
 			width:'118px',
@@ -211,13 +239,14 @@ var correctCards = function(card){
 				},
 				function()
 				{
+					console.log('yes');
 					window.setTimeout(function(){
 						card.attr({class:'card match'});
 						
 						//remove event handle
 						card.off('click');
-
-						console.log(showCards);
+						flag = lock;
+						
 					},800);
 				}
 			});
@@ -226,7 +255,7 @@ var correctCards = function(card){
 };
 
 //incorrect card operation
-var incorrectCards = function(card){
+var incorrectCards = function(card,lock){
 	card.attr({class:'card incorrect'});
 
 	card.animate({
@@ -235,7 +264,8 @@ var incorrectCards = function(card){
 			function(){				
 				card.animate({marginLeft:'0px'},'fast',function(){
 					window.setTimeout(function(){
-						card.attr({class:'card'});					 			
+						card.attr({class:'card'});	
+						flag = lock;				 			
 					},300);					
 				});				
 			});	
