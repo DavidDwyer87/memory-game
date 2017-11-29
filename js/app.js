@@ -226,6 +226,8 @@ var correctCards = function(card,lock){
 			height:'118px',
 			left: '7px'
 		},"fast",function(){
+			console.log('yes');
+			flag = lock;
 			card.animate({
 					width:'125px',
 					height:'125px',
@@ -239,14 +241,14 @@ var correctCards = function(card,lock){
 				},
 				function()
 				{
-					console.log('yes');
+					
 					window.setTimeout(function(){
+						
 						card.attr({class:'card match'});
 						
 						//remove event handle
 						card.off('click');
-						flag = lock;
-						
+												
 					},800);
 				}
 			});
