@@ -82,8 +82,8 @@ Game.prototype.addToDeck = function()
 	//remove stars 
 	$('.stars').empty();
 
-	//add 5 starts
-    for(var i=1; i<6; i++){    	
+	//add 3 starts
+    for(var i=1; i<4; i++){    	
 		$('.stars').append("<li>"+
 								"<i class='fa fa-star'></i>"+
 						 	"</li>");	
@@ -107,10 +107,6 @@ Game.prototype.cardHandler = function(){
 		queue.push(icon);
 		determine();	
 	}
-	else
-	{
-		console.log("not working "+flag+" "+queue.length);
-	}
 	
 };
 
@@ -119,13 +115,13 @@ var Moves = function()
 {
 	//initialize move count variable
 	this.moveCounter = 0; //move tracker
-	this.countDown = 5; //stars tracker
+	this.countDown = 3; //stars tracker
 
 	// add count to UI
 	$('.moves').html(this.moveCounter);
     
     //stores the stars and moves to display on winner page
-    window.sessionStorage.setItem('stars',5);
+    window.sessionStorage.setItem('stars',this.countDown);
     window.sessionStorage.setItem('moves',0);    
 };
 
@@ -133,8 +129,8 @@ var Moves = function()
 Moves.prototype.increment = function(){
 	this.moveCounter++;
 
-	//remove star when the moveCounter 13, 26, 39, 52, 65
-	if(this.moveCounter == 13 || this.moveCounter == 26 || this.moveCounter == 39 || this.moveCounter == 52 || this.moveCounter == 65){
+	//remove star when the moveCounter 21, 26, 39, 52, 65
+	if(this.moveCounter == 21 || this.moveCounter == 42 || this.moveCounter == 64){
 		var star = '';
 		//remove a star
 		$('.fa-star').each(function(){
