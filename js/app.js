@@ -22,6 +22,11 @@ var queue = []; //card queue
 var showCards = 0; //keep the count of all the card combination founded by users.
 var flag = false; //keep too much card from showing.
 
+//time 
+var minute = 0;
+var hour = 0;
+var time = "";
+
 
 //deck constructure class
 var Deck = function()
@@ -85,6 +90,9 @@ Game.prototype.addToDeck = function()
     }
 
 	$('.card').click(this.cardHandler);
+
+	//add timer 
+	new Timer();
 };
 
 //event handler for cards
@@ -196,6 +204,7 @@ var determine = function(){
 			
 			//check if player win the game
 			if(showCards >= 8){
+				window.sessionStorage.time = time;
 				window.location.href = "win.html";
 			}
 
@@ -287,6 +296,56 @@ function shuffle(array) {
 
     return array;
 }
+
+var Timer =function(){
+	hour = 0;
+	minute = 0;
+	this.seconds = 0;
+};
+
+Timer.event = window.setInterval(function(){
+	 this.second++;
+
+	 var minuteTxt = "";
+	 var hourTxt = "";
+	 var secondTxt = "";
+	
+	 if (this.second==60)
+	 {
+	 	this.second = 0;
+	 	minute++;
+	 	if(minute == 60)
+	 	{
+	 		hour++;
+	 	}
+	 }
+
+	 if(this.second <10){
+	 	secondTxt = "0"+this.second;
+	 }
+	 else if(this.second>=10)
+	 {
+	 	secondTxt = this.second;
+	 }
+
+	 if(minute==0 || minute<10){
+	 	minuteTxt = "0"+minute
+	 }
+	 else
+	 {
+	 	minuteTxt = minute;
+	 }
+
+	 if (hour==0 || hour<10) 
+	 {
+	 	hourTxt = "0"+hour;
+	 }
+	
+	 time = hourTxt+":"+minuteTxt+":"+secondTxt;
+	 
+	 //update UI
+	 $('#time').html(time);
+},1000);
 
 //main
 $(document).ready(function(){
