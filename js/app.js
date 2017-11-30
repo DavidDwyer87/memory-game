@@ -316,6 +316,7 @@ Timer.event = window.setInterval(function(){
 	 	minute++;
 	 	if(minute == 60)
 	 	{
+	 		minute = 0;
 	 		hour++;
 	 	}
 	 }
